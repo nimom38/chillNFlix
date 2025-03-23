@@ -19,10 +19,10 @@ const __dirname = path.resolve();
 app.use(express.json()); // will allow us to parse req.body
 app.use(cookieParser());
 
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/movie", protectRoute, movieRoutes);
-app.use("/api/v1/tv", protectRoute, tvRoutes);
-app.use("/api/v1/search", protectRoute, searchRoutes);
+app.use("/api/v1/netflix/auth", authRoutes);
+app.use("/api/v1/netflix/movie", protectRoute, movieRoutes);
+app.use("/api/v1/netflix/tv", protectRoute, tvRoutes);
+app.use("/api/v1/netflix/search", protectRoute, searchRoutes);
 
 if (ENV_VARS.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
