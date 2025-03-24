@@ -1,28 +1,51 @@
 import express from "express";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import path from "path";
+import { createServer } from "http";
 
-import authRoutes from "./routes/auth.route.js";
-import movieRoutes from "./routes/movie.route.js";
-import tvRoutes from "./routes/tv.route.js";
-import searchRoutes from "./routes/search.route.js";
+import authRoutes from "./routes/netflix/auth.route.js";
+import movieRoutes from "./routes/netflix/movie.route.js";
+import tvRoutes from "./routes/netflix/tv.route.js";
+import searchRoutes from "./routes/netflix/search.route.js";
+import userRoutes from "./routes/tinder/userRoutes.js";
+import matchRoutes from "./routes/tinder/matchRoutes.js";
+import messageRoutes from "./routes/tinder/messageRoutes.js";
 
-import { ENV_VARS } from "./config/envVars.js";
-import { connectDB } from "./config/db.js";
+import { ENV_VARS } from "./config/netflix/envVars.js";
+import { connectDB } from "./config/netflix/db.js";
 import { protectRoute } from "./middleware/protectRoute.js";
+import { initializeSocket } from "./socket/tinder/socket.server.js";
+
+dotenv.config();
+
 
 const app = express();
+const httpServer = createServer(app);
 
 const PORT = ENV_VARS.PORT;
 const __dirname = path.resolve();
 
+initializeSocket(httpServer);
+
 app.use(express.json()); // will allow us to parse req.body
 app.use(cookieParser());
+app.use(
+	cors({
+		origin: process.env.CLIENT_URL,
+		credentials: true,
+	})
+);
 
 app.use("/api/v1/netflix/auth", authRoutes);
 app.use("/api/v1/netflix/movie", protectRoute, movieRoutes);
 app.use("/api/v1/netflix/tv", protectRoute, tvRoutes);
 app.use("/api/v1/netflix/search", protectRoute, searchRoutes);
+
+app.use("/api/tinder/users", userRoutes);
+app.use("/api/tinder/matches", matchRoutes);
+app.use("/api/tinder/messages", messageRoutes);
 
 if (ENV_VARS.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
