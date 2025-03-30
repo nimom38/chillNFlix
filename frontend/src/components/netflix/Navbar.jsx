@@ -30,7 +30,8 @@ const Navbar = () => {
 					<Link to='/netflix/history' className='hover:underline'>
 						Search History
 					</Link>
-					<Link to='/tinder' className='hover:underline'>Dating</Link>
+					<Link to='/tinder' className='hover:underline'>Match Making</Link>
+					<Link to='/community' className='hover:underline'>Community</Link>
 				</div>
 			</div>
 

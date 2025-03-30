@@ -24,13 +24,19 @@ export const initializeSocket = (httpServer) => {
 	io.on("connection", (socket) => {
 		console.log(`User connected with socket id: ${socket.id}`);
 		connectedUsers.set(socket.userId, socket.id);
+		io.emit("getOnlineUsers", Object.keys(connectedUsers));
 
 		socket.on("disconnect", () => {
 			console.log(`User disconnected with socket id: ${socket.id}`);
 			connectedUsers.delete(socket.userId);
+			io.emit("getOnlineUsers", Object.keys(connectedUsers));
 		});
 	});
 };
+
+export function getReceiverSocketId(userId) {
+	return connectedUsers[userId];
+}
 
 export const getIO = () => {
 	if (!io) {

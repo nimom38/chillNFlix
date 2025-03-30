@@ -13,6 +13,8 @@ import userRoutes from "./routes/tinder/userRoutes.js";
 import matchRoutes from "./routes/tinder/matchRoutes.js";
 import messageRoutes from "./routes/tinder/messageRoutes.js";
 
+import communityMessageRoutes from "./routes/community/communityMessage.route.js";
+
 import { ENV_VARS } from "./config/netflix/envVars.js";
 import { connectDB } from "./config/netflix/db.js";
 import { protectRoute } from "./middleware/protectRoute.js";
@@ -46,6 +48,9 @@ app.use("/api/v1/netflix/search", protectRoute, searchRoutes);
 app.use("/api/tinder/users", userRoutes);
 app.use("/api/tinder/matches", matchRoutes);
 app.use("/api/tinder/messages", messageRoutes);
+
+app.use("/api/community/messages", communityMessageRoutes);
+
 
 if (ENV_VARS.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
