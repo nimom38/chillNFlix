@@ -11,6 +11,8 @@ export const initializeSocket = (userId) => {
 
 	socket = io(SOCKET_URL, {
 		auth: { userId },
+		query: { userId },
+		withCredentials: true,
 	});
 };
 
@@ -20,6 +22,24 @@ export const getSocket = () => {
 	}
 	return socket;
 };
+
+export const joinChannel = (channelId) => {
+	if (socket) socket.emit("joinChannel", channelId);
+};
+
+export const leaveChannel = (channelId) => {
+	if (socket) socket.emit("leaveChannel", channelId);
+};
+
+export const sendChannelMessage = (channelId, message) => {
+	if (socket) socket.emit("sendChannelMessage", { channelId, message });
+};
+
+export const sendDirectMessage = (receiverId, message) => {
+    const socket = getSocket();
+    socket.emit("sendDirectMessage", { receiverId, message });
+};
+
 
 export const disconnectSocket = () => {
 	if (socket) {

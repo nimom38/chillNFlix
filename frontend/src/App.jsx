@@ -18,8 +18,7 @@ import TinderChatPage from "./pages/tinder/ChatPage";
 import CommunityHomePage from "./pages/community/CommunityHomePage";
 import CommunitySettingsPage from "./pages/community/CommunitySettingsPage";
 import CommunityProfilePage from "./pages/community/CommunityProfilePage";
-import Navbar from "./components/community/Navbar";
-
+import Navbar from "./components/shared/Navbar";
 const CommunityLayout = () => {
 	const { theme } = useThemeStore();
 	return (

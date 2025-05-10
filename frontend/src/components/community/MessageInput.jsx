@@ -1,17 +1,30 @@
 import { useRef, useState } from "react";
+import { useAuthStore } from "../../store/netflix/authUser";
+import { useGroupStore } from "../../store/community/useGroupStore";
 import { useChatStore } from "../../store/community/useChatStore";
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { sendChannelMessage, sendDirectMessage } from "../../socket/tinder/socket.client.js";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  const { sendMessage } = useChatStore();
+
+  const { selectedChannel, selectedGroup } = useGroupStore();
+  const { selectedUser } = useChatStore();
+  const { user } = useAuthStore();
+
+  const isDM = !!selectedUser;
+  const isGroupChannel = !!selectedGroup && !!selectedChannel;
+
+  if (!isDM && !isGroupChannel) {
+    return null;
+  }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (!file.type.startsWith("image/")) {
+    if (!file?.type?.startsWith("image/")) {
       toast.error("Please select an image file");
       return;
     }
@@ -32,20 +45,42 @@ const MessageInput = () => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
 
-    try {
+    // ✅ Group Chat
+    if (isGroupChannel) {
+      const message = {
+        text: text.trim(),
+        image: imagePreview,
+        senderId: user._id,
+        senderImage: user.image,
+        createdAt: new Date().toISOString(),
+      };
+
+      sendChannelMessage(selectedChannel._id, message);
+
+      // ✅ Immediately add to group chat state
+      const { messages } = useGroupStore.getState();
+      useGroupStore.setState({
+        messages: [...messages, message],
+      });
+    }
+    // ✅ Direct Message
+    else if (isDM) {
+      const { sendMessage } = useChatStore.getState();
       await sendMessage({
         text: text.trim(),
         image: imagePreview,
       });
-
-      // Clear form
-      setText("");
-      setImagePreview(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    } catch (error) {
-      console.error("Failed to send message:", error);
+    } else {
+      toast.error("No valid chat selected.");
+      return;
     }
-  };
+
+    // Clear input after send
+    setText("");
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+};
+
 
   return (
     <div className="p-4 w-full">
@@ -88,8 +123,9 @@ const MessageInput = () => {
 
           <button
             type="button"
-            className={`hidden sm:flex btn btn-circle
-                     ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
+            className={`hidden sm:flex btn btn-circle ${
+              imagePreview ? "text-emerald-500" : "text-zinc-400"
+            }`}
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
@@ -106,4 +142,5 @@ const MessageInput = () => {
     </div>
   );
 };
+
 export default MessageInput;

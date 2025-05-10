@@ -4,7 +4,12 @@ import toast from "react-hot-toast";
 import { getSocket } from "../../socket/tinder/socket.client";
 
 export const useMatchStore = create((set) => ({
-	matches: [],
+	matches: [{
+		_id: "temp123",
+		name: "Test User",
+		image: "/avatar.png", // or any public image
+	  }
+	],
 	isLoadingMyMatches: false,
 	isLoadingUserProfiles: false,
 	userProfiles: [],

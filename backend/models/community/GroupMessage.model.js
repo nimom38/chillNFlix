@@ -1,21 +1,16 @@
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema(
+const groupMessageSchema = new mongoose.Schema(
   {
     senderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    receiverId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      default: null, // for DMs
-    },
     channelId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Channel",
-      default: null, // for group chat
+      required: true,
     },
     text: {
       type: String,
@@ -23,10 +18,13 @@ const messageSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    senderImage: {
+      type: String, // Useful to store avatar at the time of sending
+    },
   },
   { timestamps: true }
 );
 
-const CommunityMessage = mongoose.model("CommunityMessage", messageSchema);
+const GroupMessage = mongoose.model("GroupMessage", groupMessageSchema);
 
-export default CommunityMessage;
+export default GroupMessage;
