@@ -50,10 +50,13 @@ const allowedOrigins = [
     'https://chill-n-flix.vercel.app'           // production frontend
 ];
 
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
-}));
+// app.use(cors({
+//     origin: allowedOrigins,
+//     credentials: true
+// }));
+
+app.use(cors());
+
 
 // app.use(cors());
 
