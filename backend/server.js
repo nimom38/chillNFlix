@@ -55,7 +55,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(cors());
+// app.use(cors());
 
 app.use("/api/v1/netflix/auth", authRoutes);
 app.use("/api/v1/netflix/movie", protectRoute, movieRoutes);
