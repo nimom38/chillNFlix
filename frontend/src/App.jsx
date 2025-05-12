@@ -19,6 +19,8 @@ import CommunityHomePage from "./pages/community/CommunityHomePage";
 import CommunitySettingsPage from "./pages/community/CommunitySettingsPage";
 import CommunityProfilePage from "./pages/community/CommunityProfilePage";
 import Navbar from "./components/shared/Navbar";
+import Chatbot from "./pages/aichatbot/Chatbot"; // <-- added import
+
 const CommunityLayout = () => {
 	const { theme } = useThemeStore();
 	return (
@@ -43,6 +45,17 @@ const NetflixLayout = () => (
 		<Footer />
 		<Toaster />
 	</>
+);
+
+// NEW LAYOUT for AiChatbot
+const AiChatbotLayout = () => (
+	<div className="h-screen w-screen bg-gray-100">
+		<Navbar />
+		<div className="p-4">
+			<Outlet />
+		</div>
+		<Toaster />
+	</div>
 );
 
 function App() {
@@ -88,6 +101,11 @@ function App() {
 					<Route index element={<TinderHomePage />} />
 					<Route path="profile" element={<TinderProfilePage />} />
 					<Route path="chat/:id" element={<TinderChatPage />} />
+				</Route>
+
+				{/* NEW AiChatbot route with layout */}
+				<Route path="/aichatbot" element={user ? <AiChatbotLayout /> : <Navigate to="/login" />}>
+					<Route index element={<Chatbot />} />
 				</Route>
 
 				<Route path='/*' element={<NotFoundPage />} />

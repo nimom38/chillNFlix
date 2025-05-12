@@ -32,6 +32,7 @@ const Navbar = () => {
 					</Link>
 					<Link to='/tinder' className='hover:underline'>Match Making</Link>
 					<Link to='/community' className='hover:underline'>Community</Link>
+					<Link to='/aichatbot' className='hover:underline'>AI Companion</Link>
 				</div>
 			</div>
 

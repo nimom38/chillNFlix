@@ -4,6 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { SMALL_IMG_BASE_URL } from "../../utils/netflix/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { MOVIE_CATEGORIES, TV_CATEGORIES } from "../../utils/netflix/constants";
+
 
 const MovieSlider = ({ category }) => {
 	const { contentType } = useContentStore();
@@ -13,17 +15,46 @@ const MovieSlider = ({ category }) => {
 	const sliderRef = useRef(null);
 
 	const formattedCategoryName =
-		category.replaceAll("_", " ")[0].toUpperCase() + category.replaceAll("_", " ").slice(1);
+		category === "ai_recommendations"
+			? "AI Powered Recommendations for You"
+			: category.replaceAll("_", " ")[0].toUpperCase() + category.replaceAll("_", " ").slice(1);
+
 	const formattedContentType = contentType === "movie" ? "Movies" : "TV Shows";
 
 	useEffect(() => {
 		const getContent = async () => {
-			const res = await axios.get(`/api/v1/netflix/${contentType}/${category}`);
-			setContent(res.data.content);
+			if (category === "ai_recommendations") {
+				// 🪄 AI powered = shuffle of existing categories
+				const categoriesToPull = contentType === "movie" ? MOVIE_CATEGORIES : TV_CATEGORIES;
+				let allContent = [];
+
+				for (const cat of categoriesToPull) {
+					try {
+						const res = await axios.get(`/api/v1/netflix/${contentType}/${cat}`);
+						allContent = allContent.concat(res.data.content);
+					} catch (e) {
+						console.error(`Failed to fetch ${cat}:`, e);
+					}
+				}
+
+				// Shuffle array
+				for (let i = allContent.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1));
+					[allContent[i], allContent[j]] = [allContent[j], allContent[i]];
+				}
+
+				// Pick first 20 random items
+				setContent(allContent.slice(0, 20));
+			} else {
+				// normal behavior
+				const res = await axios.get(`/api/v1/netflix/${contentType}/${category}`);
+				setContent(res.data.content);
+			}
 		};
 
 		getContent();
 	}, [contentType, category]);
+	
 
 	const scrollLeft = () => {
 		if (sliderRef.current) {
