@@ -3,6 +3,9 @@ import { axiosInstance } from "../../lib/tinder/axios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../netflix/authUser";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 export const useUserStore = create((set) => ({
 	loading: false,
 

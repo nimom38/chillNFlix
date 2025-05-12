@@ -4,6 +4,8 @@ import { axiosInstance } from "../../lib/community/axios";
 import { useAuthStore } from "../../store/netflix/authUser";
 import { getSocket } from "../../socket/tinder/socket.client";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
 
 export const useChatStore = create((set, get) => ({
   messages: [],

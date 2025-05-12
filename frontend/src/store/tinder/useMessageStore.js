@@ -4,6 +4,9 @@ import toast from "react-hot-toast";
 import { getSocket } from "../../socket/tinder/socket.client";
 import { useAuthStore } from "../netflix/authUser";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 export const useMessageStore = create((set) => ({
 	messages: [],
 	loading: true,

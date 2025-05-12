@@ -9,6 +9,9 @@ import { ORIGINAL_IMG_BASE_URL, SMALL_IMG_BASE_URL } from "../../utils/netflix/c
 import { formatReleaseDate } from "../../utils/netflix/dateFunction";
 import WatchPageSkeleton from "../../components/netflix/skeletons/WatchPageSkeleton";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 const NetflixWatchPage = () => {
 	const { id } = useParams();
 	const [trailers, setTrailers] = useState([]);

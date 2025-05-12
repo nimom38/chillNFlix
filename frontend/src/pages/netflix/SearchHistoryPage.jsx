@@ -5,6 +5,9 @@ import { SMALL_IMG_BASE_URL } from "../../utils/netflix/constants";
 import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 function formatDate(dateString) {
 	// Create a Date object from the input date string
 	const date = new Date(dateString);

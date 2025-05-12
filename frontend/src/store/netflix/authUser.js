@@ -5,6 +5,9 @@ import { disconnectSocket, getSocket, initializeSocket } from "../../socket/tind
 import { io } from "socket.io-client";
 import { axiosInstance } from "../../lib/community/axios.js";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 
 export const useAuthStore = create((set, get) => ({
 	user: null,

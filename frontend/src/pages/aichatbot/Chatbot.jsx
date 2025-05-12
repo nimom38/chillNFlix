@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 function Chatbot() {
     const [messages, setMessages] = useState([
         { sender: "bot", text: "Hi! I'm your AI movie assistant. How can I help you today?" }

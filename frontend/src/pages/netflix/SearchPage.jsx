@@ -7,6 +7,9 @@ import axios from "axios";
 import { ORIGINAL_IMG_BASE_URL } from "../../utils/netflix/constants";
 import { Link } from "react-router-dom";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 const SearchPage = () => {
 	const [activeTab, setActiveTab] = useState("movie");
 	const [searchTerm, setSearchTerm] = useState("");

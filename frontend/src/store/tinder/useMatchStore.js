@@ -3,6 +3,9 @@ import { axiosInstance } from "../../lib/tinder/axios";
 import toast from "react-hot-toast";
 import { getSocket } from "../../socket/tinder/socket.client";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 export const useMatchStore = create((set) => ({
 	matches: [{
 		_id: "temp123",

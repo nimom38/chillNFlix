@@ -6,6 +6,9 @@ import { SMALL_IMG_BASE_URL } from "../../utils/netflix/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MOVIE_CATEGORIES, TV_CATEGORIES } from "../../utils/netflix/constants";
 
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
+
 
 const MovieSlider = ({ category }) => {
 	const { contentType } = useContentStore();
