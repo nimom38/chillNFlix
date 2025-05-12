@@ -45,6 +45,16 @@ app.use(cookieParser());
 // 		credentials: true,
 // 	})
 // );
+const allowedOrigins = [
+    process.env.CLIENT_URL,                    // vite local
+    'https://chill-n-flix.vercel.app'           // production frontend
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
+
 app.use(cors());
 
 app.use("/api/v1/netflix/auth", authRoutes);
